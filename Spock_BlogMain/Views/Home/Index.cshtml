@@ -1,31 +1,114 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿<head>
+    <!--favicon-->
+    <link rel="icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/favicon.ico" />
+</head>
+
+@using Spock_BlogMain.Models
+@using PagedList
+@using PagedList.Mvc
+@model IPagedList<BlogMain>
+
+
+@{
+    ViewBag.Title = "Home";
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+<style>
+    .backgd {
+        background-color: lightgray;
+    }
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
+
+    .btnclr {
+        background-color:orange;
+        padding-left:20px;
+        width:15%
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<body>
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('/img/home-bg.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <h1 style="color:#b30000">Srijana's Blog</h1>
+                        <span class="subheading">My coding journey...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+            @using (Html.BeginForm("Index", "BlogMains", FormMethod.Get, htmlAttributes: new { @class = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="controls controls-row search-row">
+                    <input id="searchStr" name="searchStr" class="input-block-level" type="text" placeholder="Search Posts">
+
+                    <button id="searchStr" name="searchStr" class="btn btn-danger " type="submit">
+                        <i class="icon-search"> Click</i>
+                    </button>
+
+                </div>
+            }
+            </div>
+         </div>  
+        </hr>
+        </br>
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    @foreach (var post in Model)
+                    {
+                        <div class="post-review">
+                            <a href="@Url.Action("Details", "BlogMains", new { slug = post.Slug })">
+                                @*<a href="@Url.Action("Details", "BlogMains" ,new{slug =post.Slug })"
+                                class="a-block d-flex align-items-center height-lg" style="background-image: url(@post.MediaUrl); ">*@
+
+                                <h4 class="post title">
+                                    @post.Title
+                                </h4>
+                                <h6 class="post subtitle">
+                                    @post.Abstract
+                                </h6>
+
+                            </a>
+                            <p class="post-meta">
+
+                                Posted by Srijana Karki on @post.Created.ToString("MM/dd/yyyy")
+                            </p>
+                        </div>
+                    }
+
+                    <hr>
+
+
+                    @*//Lastly, Add or Modify your*@
+
+                    <!-- Pager -->
+                    <div class="clearfix">
+
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchStr = ViewBag.Search }))
+                        @*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount	@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))*@
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+</body>
+
+</html>

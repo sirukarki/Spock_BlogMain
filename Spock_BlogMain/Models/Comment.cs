@@ -14,6 +14,7 @@ namespace Spock_BlogMain.Models
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Updated { get; set; }
         public string UpdateReason { get; set; }
+        public virtual BlogMain BlogMain{ get; set; }
         public virtual ApplicationUser Author { get; set; }
 
 

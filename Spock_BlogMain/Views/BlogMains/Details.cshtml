@@ -1,0 +1,148 @@
+﻿@model Spock_BlogMain.Models.BlogMain
+    @using Microsoft.AspNet.Identity
+
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+   
+
+
+    <!-- Page Header -->
+    <header class="smallhead" style="background-image: url('/img/siru_banner_small.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="post-heading">
+                        <br />
+                        <h1 style="color:#b30000">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Srijana's Blog</h1>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    @*Main conyent*@
+
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+
+
+                    <!--<a href="#">-->
+                    @*<img class="img-fluid" src="~/img/post-sample-image.jpg" alt="">*@
+                    <div class=" container">
+                        <div class="row">
+                            <div class="cd-lg-8 col-md-1g-10 max=auto">
+                                <span style="font-size:2em;"> @Html.Raw(Model.Title)</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cd-lg-8 col-md-1g-10 max=auto">
+                                <span class="caption text-muted" style="font-style:italic;"> @Html.Raw(Model.Created.ToString("ddd, dd MMM yyyy"))</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="cd-lg-8 col-md-1g-10 max=auto">
+                                @Html.Raw(Model.Body)
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="cd-lg-8 col-md-1g-10 max=auto">
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <br />
+                                    <a href='@Url.Action("Edit", "BlogMains", new { id = Model.Id })'>Edit</a> <span>&nbsp;</span>
+                                    <a href='@Url.Action("Delete", "BlogMains", new { id = Model.Id })'>Delete</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+
+
+    <hr />
+    <div class="row">
+        <div class="col-md-12 text-center" h3">
+            Comment section
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center" h3">
+            @{
+                var count = Model.Comments.Count();
+                var word = count == 1 ? "comment" : "comments";
+            }
+            (@count  @word...)
+        </div>
+    </div>
+    <br />
+
+    @* I would like to order these comment by descending creared date*@
+    @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+    {
+        <hr />
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 text-left"><span style="font-size:small;font-style:italic;">Written by @comment.Author.Email on @comment.Created.ToString("MMMM d,yyyy")</span></div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 text-left">@comment.Body</div>
+            <div class="col-md-1"></div>
+        </div>
+
+        if (User.IsInRole("Admin") || User.IsInRole("Moderator") || User.Identity.GetUserId() == comment.AuthorId)
+        {
+            <br />
+            <div class="row" style="font-size:small; font-style:italic; color:gray;padding-left:10px;">
+                <div class="col-md-12">
+                    <a href='@Url.Action("Edit", "Comments", new { id = comment.Id })'>Edit</a> <span>&nbsp;</span>
+                    <a href='@Url.Action("Delete", "Comments", new { id = comment.Id })'>Delete</a>
+                </div>
+            </div>
+        }
+    }
+    @*Conditionally render the "Add coment"form"*@
+    @*Create a form to collect the comments from the logged in user*@
+    @if (User.Identity.IsAuthenticated)
+    {
+        using (Html.BeginForm("Create", "Comments", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(Model => Model.Slug)
+            @Html.Hidden("BlogMainId", Model.Id)
+            <div class="row">
+                <div class="col-md-12" h3" style="margin-left:50px">
+                    Comment here
+                </div>
+            </div>
+         <div style="margin-left:50px">
+            <textarea name="CommentBody" rows="5" cols="100"></textarea>
+            <br />
+            <button class="btn btn-primary" type="submit">Add</button>
+        </div>
+        }
+    }
+    <!-- Bootstrap core JavaScript -->
+
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <!-- Custom scripts for this template -->
+
+    <script src="~/Scripts/clean-blog.min.js"></script>
+</body>
+</html>

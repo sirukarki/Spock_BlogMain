@@ -44,7 +44,7 @@ namespace Spock_BlogMain.Models
             return new ApplicationDbContext();
         }
 
-        public DbSet<BlogMain> BlogMain { get; set; }
+        public DbSet<BlogMain> BlogMains { get; set; }
         public DbSet<Comment> Comments { get; set; }
 
     }

@@ -49,40 +49,41 @@ namespace Spock_BlogMain.Migrations
 
                 new UserStore<ApplicationUser>(context));
 
-            if (!context.Users.Any(u => u.Email == "JoeSnow@Mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "sirukarki@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "JoeSnow@Mailinator.com",
-                    Email = "JoeSnow@Mailinator.com",
-                    FirstName = "Joey",
-                    LastName = "Snow",
-                    DisplayName = "Joe"
+                    UserName = "sirukarki@Mailinator.com",
+                    Email = "sirukarki@Mailinator.com",
+                    FirstName = "Srijana",
+                    LastName = "Karki",
+                    DisplayName = "Srijana"
 
                 }, "Abc&123");
 
 
             }
-            if (!context.Users.Any(u => u.Email == "HappySnow@Mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "sirukarki@Mailinator.com"))
             {
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "HappySnow@Mailinator.com",
-                    Email = "HappySnow@Mailinator.com",
-                    FirstName = "Happy",
-                    LastName = "Snow",
-                    DisplayName = "Hap"
+                    UserName = "sirukarki@Mailinator.com",
+                    Email = "sirukarki@Mailinator.com.com",
+                    FirstName = "Srijana",
+                    LastName = "Karki",
+                    DisplayName = "Srijana"
                 }, "Abc&123");
 
 
             }
 
 
-            var userId = userManager.FindByEmail("JoeSnow@Mailinator.com").Id;
+                var userId = userManager.FindByEmail("sirukarki@Mailinator.com").Id;
                 userManager.AddToRole(userId, "Admin");
-                userId = userManager.FindByEmail("HappySnow@Mailinator.com").Id;
+                userId = userManager.FindByEmail("sirukarki@Mailinator.com.com").Id;
                 userManager.AddToRole(userId, "Moderator");
         }
-    }
 }
 
+
+    }
